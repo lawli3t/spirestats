@@ -1,3 +1,5 @@
+import time
+
 from flask import Blueprint
 
 from app.parser import RelicParser
@@ -14,10 +16,8 @@ def parse_relics(filename):
     parser = RelicParser()
 
     with open(filename, 'r') as f:
-        relics = [relic for relic in parser.parse_from_file(f)]
+        relics = parser.parse_from_file(f)
 
     dao = RelicSqlDao()
-    print(len(relics))
     dao.insert_all(relics)
-    print(dao.get_all())
 

@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, Iterable
 
 from pypika import Query
 
@@ -21,18 +21,14 @@ class SqlDao:
 class RelicSqlDao(RelicDao):
     def get_all(self) -> Sequence[Relic]:
         relic_table = Relic.table()
-
         query = Query.from_(relic_table) \
             .select(relic_table.name)
-
-        print(query.get_sql())
 
         with open_cursor() as (cursor, connection):
             cursor.execute(str(query))
             return [Relic(**row) for row in cursor]
 
-    def insert_all(self, relics: Sequence[Relic]):
-        print(len(relics))
+    def insert_all(self, relics: Iterable[Relic]):
         if not relics:
             return []
 
@@ -41,8 +37,6 @@ class RelicSqlDao(RelicDao):
 
         for relic in relics:
             query = query.insert(relic.name)
-
-        print(query.get_sql())
 
         with open_cursor() as (cursor, connection):
             cursor.execute(str(query))

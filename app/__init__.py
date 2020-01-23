@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import _app_ctx_stack
 
+from app.database import DB_ATTRIBUTE
+
 
 def create_app(config_filename: str) -> Flask:
     app = Flask(__name__)
@@ -11,7 +13,7 @@ def create_app(config_filename: str) -> Flask:
     @app.teardown_appcontext
     def close_connection(exception):
         top = _app_ctx_stack.top
-        if hasattr(top, 'sqlite_db'):
-            top.sqlite_db.close()
+        if hasattr(top, DB_ATTRIBUTE):
+            getattr(top, DB_ATTRIBUTE).close()
 
     return app

@@ -6,11 +6,12 @@ from typing import Generator, Tuple
 from flask import _app_ctx_stack
 
 DATABASE = ':memory:'
+DB_ATTRIBUTE = 'db'
 
 
 def get_db() -> Connection:
     top = _app_ctx_stack.top
-    if not hasattr(top, 'db'):
+    if not hasattr(top, DB_ATTRIBUTE):
         top.db = sqlite3.connect(DATABASE)
         top.db.row_factory = sqlite3.Row
         setup_db(top.db)
