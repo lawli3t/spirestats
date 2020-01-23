@@ -1,8 +1,14 @@
 import typing
+import uuid
+from dataclasses import field
 
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pypika import Table
+
+
+def uuid_factory() -> str:
+    return str(uuid.uuid4())
 
 
 @dataclass
@@ -21,7 +27,7 @@ class Card(Base):
     name: str
 
     id: int = None
-    uuid: str = None
+    uuid: str = field(default_factory=uuid_factory)
 
 
 @dataclass
@@ -51,9 +57,10 @@ class Relic(Base):
         return Table(Relic.table_name())
 
     name: str
+    flavor: str
 
     id: int = None
-    uuid: str = None
+    uuid: str = field(default_factory=uuid_factory)
 
 
     @validator('name')

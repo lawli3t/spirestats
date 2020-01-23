@@ -14,15 +14,10 @@ class RelicDao:
         raise NotImplementedError
 
 
-class SqlDao:
-    pass
-
-
 class RelicSqlDao(RelicDao):
     def get_all(self) -> Sequence[Relic]:
         relic_table = Relic.table()
-        query = Query.from_(relic_table) \
-            .select(relic_table.name)
+        query = Query.from_(relic_table).select('*')
 
         with open_cursor() as (cursor, connection):
             cursor.execute(str(query))
@@ -33,10 +28,10 @@ class RelicSqlDao(RelicDao):
             return []
 
         query = Query.into(Relic.table()) \
-            .columns('name') \
+            .columns('name', 'uuid', 'flavor') \
 
         for relic in relics:
-            query = query.insert(relic.name)
+            query = query.insert(relic.name, relic.uuid, relic.flavor)
 
         with open_cursor() as (cursor, connection):
             cursor.execute(str(query))

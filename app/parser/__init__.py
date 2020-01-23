@@ -23,4 +23,4 @@ class RelicParser:
         for name, data in dict.items():
             if "Test" in name:
                 continue
-            yield Relic(name=name)
+            yield Relic(name=name, flavor=data['FLAVOR'])

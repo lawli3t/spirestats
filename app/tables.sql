@@ -1,5 +1,6 @@
-CREATE TABLE relics(
+CREATE TABLE IF NOT EXISTS relics(
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
+    flavor TEXT NOT NULL,
     uuid TEXT
 )

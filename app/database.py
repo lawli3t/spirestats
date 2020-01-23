@@ -5,7 +5,7 @@ from typing import Generator, Tuple
 
 from flask import _app_ctx_stack
 
-DATABASE = ':memory:'
+DATABASE = 'db.db'
 DB_ATTRIBUTE = 'db'
 
 

@@ -10,6 +10,9 @@ def create_app(config_filename: str) -> Flask:
     from app.commands.importer import blueprint as extract_blueprint
     app.register_blueprint(extract_blueprint)
 
+    from app.controller import relic
+    app.register_blueprint(relic)
+
     @app.teardown_appcontext
     def close_connection(exception):
         top = _app_ctx_stack.top
