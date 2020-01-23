@@ -5,6 +5,8 @@ from pypika import Query
 from app.models import Relic
 from app.database import open_cursor
 
+import dataclasses
+
 
 class RelicDao:
     def insert_all(self, relics: Sequence[Relic]):
@@ -27,11 +29,13 @@ class RelicSqlDao(RelicDao):
         if not relics:
             return []
 
+        fields = Relic.fields()
+
         query = Query.into(Relic.table()) \
-            .columns('name', 'uuid', 'flavor') \
+            .columns(*fields) \
 
         for relic in relics:
-            query = query.insert(relic.name, relic.uuid, relic.flavor)
+            query = query.insert(*(getattr(relic, field) for field in fields))
 
         with open_cursor() as (cursor, connection):
             cursor.execute(str(query))

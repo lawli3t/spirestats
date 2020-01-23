@@ -1,6 +1,6 @@
 import typing
 import uuid
-from dataclasses import field
+from dataclasses import field, fields
 
 from pydantic import validator
 from pydantic.dataclasses import dataclass
@@ -20,6 +20,10 @@ class Base:
     @staticmethod
     def table() -> Table:
         raise NotImplementedError
+
+    @staticmethod
+    def fields() -> typing.Sequence[str]:
+        return [field.name for field in fields(Relic)]
 
 
 @dataclass
